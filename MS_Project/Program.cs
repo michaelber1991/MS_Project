@@ -1,8 +1,12 @@
 
+using MS_Project.Services;
+using MS_Project.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers(); 
+builder.Services.AddScoped<IWeatherService, WeatherService>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
