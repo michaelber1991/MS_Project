@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "ftAqArQ8aEs=",
+  "dgSpecHash": "KLVOEfD7xxc=",
   "success": true,
   "projectFilePath": "/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Application/Clean.Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/Michael/.nuget/packages/mediatr/12.4.1/mediatr.12.4.1.nupkg.sha512",
+    "/Users/Michael/.nuget/packages/mediatr.contracts/2.0.1/mediatr.contracts.2.0.1.nupkg.sha512",
+    "/Users/Michael/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

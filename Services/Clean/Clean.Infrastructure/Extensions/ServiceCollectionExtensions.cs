@@ -1,7 +1,7 @@
+using Clean.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Clean.Infrastructure.Context;
 
 namespace Clean.Infrastructure.Extensions;
 
