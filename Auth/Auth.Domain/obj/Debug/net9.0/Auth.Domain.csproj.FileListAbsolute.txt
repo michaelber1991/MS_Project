@@ -1,0 +1,12 @@
+/Users/Michael/Projects/MS_Project/Auth/Auth.Domain/bin/Debug/net9.0/Auth.Domain.deps.json
+/Users/Michael/Projects/MS_Project/Auth/Auth.Domain/bin/Debug/net9.0/Auth.Domain.dll
+/Users/Michael/Projects/MS_Project/Auth/Auth.Domain/bin/Debug/net9.0/Auth.Domain.pdb
+/Users/Michael/Projects/MS_Project/Auth/Auth.Domain/obj/Debug/net9.0/Auth.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/Michael/Projects/MS_Project/Auth/Auth.Domain/obj/Debug/net9.0/Auth.Domain.AssemblyInfoInputs.cache
+/Users/Michael/Projects/MS_Project/Auth/Auth.Domain/obj/Debug/net9.0/Auth.Domain.AssemblyInfo.cs
+/Users/Michael/Projects/MS_Project/Auth/Auth.Domain/obj/Debug/net9.0/Auth.Domain.csproj.CoreCompileInputs.cache
+/Users/Michael/Projects/MS_Project/Auth/Auth.Domain/obj/Debug/net9.0/Auth.Domain.sourcelink.json
+/Users/Michael/Projects/MS_Project/Auth/Auth.Domain/obj/Debug/net9.0/Auth.Domain.dll
+/Users/Michael/Projects/MS_Project/Auth/Auth.Domain/obj/Debug/net9.0/refint/Auth.Domain.dll
+/Users/Michael/Projects/MS_Project/Auth/Auth.Domain/obj/Debug/net9.0/Auth.Domain.pdb
+/Users/Michael/Projects/MS_Project/Auth/Auth.Domain/obj/Debug/net9.0/ref/Auth.Domain.dll

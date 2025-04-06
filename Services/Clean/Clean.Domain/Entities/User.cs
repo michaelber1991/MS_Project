@@ -1,8 +1,9 @@
 using Clean.Domain.Common;
 
 namespace Clean.Domain.Entities;
-public class User: BaseEntity
+
+public class User : BaseEntity
 {
-    public string Name { get; set; }
-    public string Email { get; set; }
+    public required string Name { get; init; }
+    public required string Email { get; init; }
 }

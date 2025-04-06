@@ -1,19 +1,20 @@
 using Clean.Application.Interfaces;
+using Clean.Application.Models;
 using Clean.Domain.Entities;
 using MediatR;
 
 namespace Clean.Application.Features.Users.Commands.CreateUser;
 
-public record CreateUserCommand(string Name, string Email) : IRequest<int>;
+public record CreateUserCommand(string Name, string Email) : IRequest<Result<User>>;
 
-public class CreateUserHandler(IUserRepository userRepository) : IRequestHandler<CreateUserCommand, int>
+public class CreateUserHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateUserCommand, Result<User>>
 {
-    private readonly IUserRepository _userRepository = userRepository;
-
-    public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<User>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var user = new User { Name = request.Name, Email = request.Email };
-        await _userRepository.AddAsync(user);
-        return user.Id;
+        await unitOfWork.Users.AddAsync(user);
+        await unitOfWork.CommitAsync();
+
+        return Result<User>.Ok(user, "User created");
     }
 }

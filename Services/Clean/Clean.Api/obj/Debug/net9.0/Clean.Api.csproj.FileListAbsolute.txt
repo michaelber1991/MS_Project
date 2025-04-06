@@ -8,7 +8,13 @@
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Clean.Api.pdb
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Azure.Core.dll
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Azure.Identity.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/FluentValidation.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/FluentValidation.AspNetCore.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/FluentValidation.DependencyInjectionExtensions.dll
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Humanizer.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/MediatR.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/MediatR.Contracts.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/MediatR.Extensions.FluentValidation.AspNetCore.dll
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Microsoft.AspNetCore.OpenApi.dll
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Microsoft.Bcl.AsyncInterfaces.dll
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Microsoft.Build.Locator.dll
@@ -171,5 +177,4 @@
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/obj/Debug/net9.0/Clean.Api.pdb
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/obj/Debug/net9.0/Clean.Api.genruntimeconfig.cache
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/obj/Debug/net9.0/ref/Clean.Api.dll
-/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/MediatR.dll
-/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/MediatR.Contracts.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Newtonsoft.Json.dll
