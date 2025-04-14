@@ -1,0 +1,68 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+*.log
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Rider settings
+.idea/
+*.sln.iml
+
+# VS Code settings
+.vscode/
+
+# ASP.NET Core
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.json
+.env
+
+# Dotnet CLI
+.project/
+*.dbmdl
+
+# NuGet
+*.nupkg
+**/packages/*
+*.snupkg
+.nuget/
+
+# Entity Framework
+Migrations/
+
+# Logs
+*.log
+logs/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Others
+*.swp
+*.bak
+*.tmp
+*.orig
+
+# macOS
+.DS_Store
+
+# Windows thumbnail cache
+Thumbs.db
+ehthumbs.db
+
+# Compiled DLLs
+*.dll
+*.exe
+*.pdb
+
+# Secrets
+secrets.json

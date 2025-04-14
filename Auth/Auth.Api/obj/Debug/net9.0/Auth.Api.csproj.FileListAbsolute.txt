@@ -178,3 +178,8 @@
 /Users/Michael/Projects/MS_Project/Auth/Auth.Api/obj/Debug/net9.0/Auth.Api.pdb
 /Users/Michael/Projects/MS_Project/Auth/Auth.Api/obj/Debug/net9.0/Auth.Api.genruntimeconfig.cache
 /Users/Michael/Projects/MS_Project/Auth/Auth.Api/obj/Debug/net9.0/ref/Auth.Api.dll
+/Users/Michael/Projects/MS_Project/Auth/Auth.Api/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.Saml.dll
+/Users/Michael/Projects/MS_Project/Auth/Auth.Api/bin/Debug/net9.0/Microsoft.IdentityModel.Xml.dll
+/Users/Michael/Projects/MS_Project/Auth/Auth.Api/bin/Debug/net9.0/Sustainsys.Saml2.dll
+/Users/Michael/Projects/MS_Project/Auth/Auth.Api/bin/Debug/net9.0/Sustainsys.Saml2.AspNetCore2.dll
+/Users/Michael/Projects/MS_Project/Auth/Auth.Api/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll

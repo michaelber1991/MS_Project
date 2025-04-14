@@ -2,7 +2,7 @@ namespace Clean.Application.Models;
 
 public class Result<T>
 {
-    public bool Success { get; private init; }
+    public bool Succeeded { get; private init; }
     public string? Message { get; private init; }
     public T? Data { get; private init; }
     public List<string> Errors { get; private init; } = new();
@@ -11,7 +11,7 @@ public class Result<T>
     {
         return new Result<T>
         {
-            Success = true,
+            Succeeded = true,
             Data = data,
             Message = message ?? "Operation succeeded",
             Errors = new List<string>()
@@ -22,7 +22,7 @@ public class Result<T>
     {
         return new Result<T>
         {
-            Success = false,
+            Succeeded = false,
             Errors = errors,
             Message = message ?? "Operation failed"
         };

@@ -11,7 +11,7 @@ public class GetAllUsersQueryHandler(IUserRepository userRepository)
 {
     public Task<PagedResult<User>> Handle(GetAllQuery<User> request, CancellationToken cancellationToken)
     {
-        var result = userRepository.GetAll(request.QueryParams);
+        var result = userRepository.GetAllPaginatedFiltered(request.QueryParams);
         return Task.FromResult(new PagedResult<User>(result.Data, result.TotalCount));
     }
 }

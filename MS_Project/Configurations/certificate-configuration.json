@@ -1,0 +1,20 @@
+{
+  "certificates": [
+    {
+      "name": "CertA",
+      "thumbprint": "A1B2C3D4E5F67890A1B2C3D4E5F67890A1B2C3D4",
+      "acceptedPaths": [
+        "/gateway/users",
+        "/gateway/endpointC"
+      ]
+    },
+    {
+      "name": "CertB",
+      "thumbprint": "B1C2D3E4F5G67890B1C2D3E4F5G67890B1C2D3E4",
+      "acceptedPaths": [
+        "/gateway/endpointB",
+        "/gateway/endpointC"
+      ]
+    }
+  ]
+}

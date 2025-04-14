@@ -13,9 +13,13 @@ public class UnitOfWork : IUnitOfWork
     {
         _context = context;
         Users = new UserRepository(_context);
+        Applications = new ApplicationRepository(_context);
+        Roles = new RoleRepository(_context);
     }
 
     public IUserRepository Users { get; }
+    public IApplicationRepository Applications { get; }
+    public IRoleRepository Roles { get; }
 
     public async Task<int> CommitAsync()
     {
