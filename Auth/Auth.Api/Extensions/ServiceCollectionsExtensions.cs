@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace Auth.Api.Extensions;
 
@@ -8,8 +9,56 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddControllers();
-        services.AddOpenApi();
+        services.AddSwaggerDocumentation();
+        services.AddCorsConfiguration();
         services.AddAuthenticationSchemes(configuration);
+
+        return services;
+    }
+
+    private static void AddCorsConfiguration(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
+    }
+
+    private static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(options =>
+        {
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Enter 'Bearer' [space] and then your valid token."
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }
+            });
+        });
 
         return services;
     }
@@ -18,27 +67,20 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         services.AddAuthentication()
-            // .AddSaml2("Saml2", options =>
-            // {
-            //     options.SPOptions.EntityId = new EntityId("https://tu-api.com/Saml2");
-            //     options.IdentityProviders.Add(new IdentityProvider(
-            //         new EntityId("https://pingfederate.com/idp"), options.SPOptions)
-            //     {
-            //         LoadMetadata = true,
-            //         MetadataLocation = "https://pingfederate.com/idp/metadata"
-            //     });
-            // })
             .AddJwtBearer("Bearer", options =>
             {
+                var jwtSettings = configuration.GetSection("Jwt");
+                var issuer = jwtSettings["Issuer"];
+                var secretKey = jwtSettings["SecretKey"];
+
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = "tu-emisor",
+                    ValidIssuer = issuer,
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey =
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes("una-clave-secreta-mas-larga-de-256-bits"))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
                 };
             });
         return services;

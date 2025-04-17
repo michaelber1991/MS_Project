@@ -4,7 +4,7 @@ using Auth.Application.Interfaces.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Auth.Application.Features.Saml.Commands.ProcessSamlLogin;
+namespace Auth.Application.Features.Auth.Commands.ProcessSamlLogin;
 
 public record ProcessSamlLoginCommand(ClaimsPrincipal Principal) : IRequest<string>;
 

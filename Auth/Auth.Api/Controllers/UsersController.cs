@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Auth.Api.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Admin")]
 [Route("[controller]")]
 [ApiController]
 public class UsersController(IMediator mediator) : ControllerBase
@@ -119,7 +119,7 @@ public class UsersController(IMediator mediator) : ControllerBase
         }
     }
 
-    [HttpPost("{userId}/applications/{applicationId}")]
+    [HttpPost("{userId}/applications/{applicationId}/assign")]
     public async Task<IActionResult> AssignUserToApplication(int userId, int applicationId)
     {
         var result = await mediator.Send(new AssignUserToApplicationCommand(userId, applicationId));
@@ -128,7 +128,7 @@ public class UsersController(IMediator mediator) : ControllerBase
         return Ok(result.Message);
     }
 
-    [HttpPost("{userId}/applications/{applicationId}/roles/{roleId}")]
+    [HttpPost("{userId}/applications/{applicationId}/roles/{roleId}/assign")]
     public async Task<IActionResult> AssignUserToRole(int userId, int applicationId, int roleId)
     {
         var result = await mediator.Send(new AssignUserToRoleCommand(userId, applicationId, roleId));

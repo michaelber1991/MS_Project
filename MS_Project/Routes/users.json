@@ -1,7 +1,7 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/user",
+      "DownstreamPathTemplate": "/users",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -19,6 +19,9 @@
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CustomScheme",
         "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "role": "Admin2,Admin3,Admin"
       }
     }
   ]

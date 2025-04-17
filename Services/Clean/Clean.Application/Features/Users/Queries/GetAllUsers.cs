@@ -9,9 +9,10 @@ namespace Clean.Application.Features.Users.Queries;
 public class GetAllUsersQueryHandler(IUserRepository userRepository)
     : IRequestHandler<GetAllQuery<User>, PagedResult<User>>
 {
-    public Task<PagedResult<User>> Handle(GetAllQuery<User> request, CancellationToken cancellationToken)
+    public async Task<PagedResult<User>> Handle(GetAllQuery<User> request, CancellationToken cancellationToken)
     {
-        var result = userRepository.GetAll(request.QueryParams);
-        return Task.FromResult(new PagedResult<User>(result.Data, result.TotalCount));
+        var result = await userRepository.GetAllPaginatedFiltered(request.QueryParams);
+        return new PagedResult<User>(result.Data, result.TotalCount);
     }
 }
+

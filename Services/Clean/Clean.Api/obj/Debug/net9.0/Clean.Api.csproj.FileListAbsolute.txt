@@ -178,3 +178,9 @@
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/obj/Debug/net9.0/Clean.Api.genruntimeconfig.cache
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/obj/Debug/net9.0/ref/Clean.Api.dll
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Newtonsoft.Json.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/DnsClient.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/MongoDB.Bson.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/MongoDB.Driver.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/SharpCompress.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Snappier.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/ZstdSharp.dll

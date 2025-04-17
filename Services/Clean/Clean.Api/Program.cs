@@ -1,13 +1,13 @@
+using Clean.Api.Extensions;
 using Clean.Application.Extensions;
 using Clean.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddApiServices(builder.Configuration);
 builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 

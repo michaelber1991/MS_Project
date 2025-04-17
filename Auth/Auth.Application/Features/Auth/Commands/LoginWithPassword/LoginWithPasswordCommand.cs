@@ -2,12 +2,16 @@ using Auth.Application.Interfaces;
 using Auth.Application.Interfaces.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
-namespace Auth.Application.Features.Credentials.Commands.LoginWithPassword;
+namespace Auth.Application.Features.Auth.Commands.LoginWithPassword;
 
 public record LoginWithPasswordCommand(string Username, string Password) : IRequest<string>;
 
-public class LoginWithPasswordCommandHandler(IUnitOfWork unitOfWork, IJwtGeneratorService jwtGenerator)
+public class LoginWithPasswordCommandHandler(
+    IUnitOfWork unitOfWork,
+    IJwtGeneratorService jwtGenerator,
+    IConfiguration configuration)
     : IRequestHandler<LoginWithPasswordCommand, string>
 {
     public async Task<string> Handle(LoginWithPasswordCommand request, CancellationToken cancellationToken)
@@ -19,10 +23,17 @@ public class LoginWithPasswordCommandHandler(IUnitOfWork unitOfWork, IJwtGenerat
                 .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role));
 
-        if (user == null || !user.VerifyPassword(request.Password))
-            return null!;
+        var applications = user?.UserApplications
+            .Select(ur => ur.Application.Name)
+            .ToList();
 
-        var roles = user.UserRoles
+        var expectedAppName = configuration["ApplicationName"];
+
+        if (user != null && !user.VerifyPassword(request.Password) && applications != null &&
+            applications.Contains(expectedAppName!))
+            return null;
+
+        var roles = user?.UserRoles
             .Select(ur => ur.Role.Name)
             .ToList();
 

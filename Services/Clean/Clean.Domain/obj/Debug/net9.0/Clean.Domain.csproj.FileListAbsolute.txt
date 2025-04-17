@@ -10,3 +10,4 @@
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Domain/obj/Debug/net9.0/refint/Clean.Domain.dll
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Domain/obj/Debug/net9.0/Clean.Domain.pdb
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Domain/obj/Debug/net9.0/ref/Clean.Domain.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Domain/obj/Debug/net9.0/Clean.Domain.csproj.AssemblyReference.cache

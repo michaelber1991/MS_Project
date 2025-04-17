@@ -4,11 +4,12 @@ using System.Text;
 using System.Text.Json;
 using Auth.Application.Interfaces.Services;
 using Auth.Domain.Entities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Auth.Application.Services;
 
-public class JwtGeneratorService : IJwtGeneratorService
+public class JwtGeneratorService(IConfiguration configuration) : IJwtGeneratorService
 {
     public string GenerateToken(User user, List<string> roles)
     {
@@ -19,13 +20,15 @@ public class JwtGeneratorService : IJwtGeneratorService
         };
 
         claims.Add(new Claim("roles", JsonSerializer.Serialize(roles)));
+        foreach (var role in roles) claims.Add(new Claim("role", role));
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("una-clave-secreta-mas-larga-de-256-bits"));
+        var jwtSection = configuration.GetSection("Jwt");
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSection["SecretKey"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            "tu-emisor",
-            "tu-front",
+            jwtSection["Issuer"],
+            jwtSection["Audience"],
             claims,
             expires: DateTime.UtcNow.AddHours(1),
             signingCredentials: creds

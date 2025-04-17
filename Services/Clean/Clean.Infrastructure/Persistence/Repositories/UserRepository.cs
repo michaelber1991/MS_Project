@@ -4,6 +4,6 @@ using Clean.Infrastructure.Persistence.Context;
 
 namespace Clean.Infrastructure.Persistence.Repositories;
 
-public class UserRepository(CleanContext context) : BaseRepository<User>(context), IUserRepository
+public class UserRepository(CleanContext context) : BaseRepository<User>(context.Users), IUserRepository
 {
 }

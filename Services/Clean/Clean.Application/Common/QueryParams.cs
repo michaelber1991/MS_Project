@@ -18,5 +18,5 @@ public class QueryParams
     public int? PageNumber { get; set; }
     public int? PageSize { get; set; }
     public string? Filters { get; set; }
-    public List<Order> Orders { get; set; } = new();
+    public string? Orders { get; set; }
 }

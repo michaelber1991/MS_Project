@@ -1,113 +1,115 @@
 using System.Linq.Expressions;
 using Clean.Application.Common;
-using Clean.Infrastructure.Persistence.Context;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using Newtonsoft.Json;
 
 namespace Clean.Infrastructure.Persistence.Repositories;
 
-public class BaseRepository<TEntity>(CleanContext context)
+public class BaseRepository<TEntity>(IMongoCollection<TEntity> collection)
     where TEntity : class
 {
-    public async Task<TEntity?> GetByIdAsync(int id)
+    public async Task<List<TEntity>> GetAllAsync(
+        Expression<Func<TEntity, bool>>? predicate = null)
     {
-        return await context.Set<TEntity>().FindAsync(id);
+        var filter = predicate != null ? Builders<TEntity>.Filter.Where(predicate) : Builders<TEntity>.Filter.Empty;
+        return await collection.Find(filter).ToListAsync();
     }
 
-    public PagedResult<TEntity> GetAll(QueryParams queryParams)
+    public async Task<TEntity?> GetAsync(
+        Expression<Func<TEntity, bool>> predicate)
     {
-        IQueryable<TEntity> query = context.Set<TEntity>();
+        return await collection.Find(predicate).FirstOrDefaultAsync();
+    }
 
+    public async Task<TEntity?> GetByIdAsync(string id)
+    {
+        var objectId = ObjectId.Parse(id);
+        var filter = Builders<TEntity>.Filter.Eq("_id", objectId);
+        return await collection.Find(filter).FirstOrDefaultAsync();
+    }
+
+    public async Task<TEntity?> GetByIdAsync(int id)
+    {
+        var filter = Builders<TEntity>.Filter.Eq("Id", id);
+        return await collection.Find(filter).FirstOrDefaultAsync();
+    }
+
+    public async Task<PagedResult<TEntity>> GetAllPaginatedFiltered(QueryParams queryParams)
+    {
+        var filter = Builders<TEntity>.Filter.Empty;
 
         if (queryParams.Filters != null)
         {
             var filters = JsonConvert.DeserializeObject<List<Filter>>(queryParams.Filters);
+            var filterDefinitions = new List<FilterDefinition<TEntity>>();
             if (filters != null)
-                foreach (var filter in filters)
-                    query = ApplyFilter(query, filter);
+                foreach (var f in filters)
+                    if (f.Type.ToLower() == "equals")
+                        filterDefinitions.Add(Builders<TEntity>.Filter.Eq(f.Property, f.Value));
+                    else if (f.Type.ToLower() == "contains")
+                        filterDefinitions.Add(Builders<TEntity>.Filter.Regex(f.Property,
+                            new BsonRegularExpression(f.Value.ToString(), "i")));
+
+            if (filterDefinitions.Any())
+                filter = Builders<TEntity>.Filter.And(filterDefinitions);
         }
 
+        var findOptions = collection.Find(filter);
 
-        foreach (var order in queryParams.Orders)
-            query = ApplyOrder(query, order);
+        if (queryParams.Orders != null)
+        {
+            var orders = JsonConvert.DeserializeObject<List<Order>>(queryParams.Orders);
+            if (orders != null)
+                foreach (var order in orders)
+                {
+                    var sort = order.Ascending
+                        ? Builders<TEntity>.Sort.Ascending(order.Property)
+                        : Builders<TEntity>.Sort.Descending(order.Property);
+                    findOptions = findOptions.Sort(sort);
+                }
+        }
 
-        var totalCount = query.Count();
+        var totalCount = await findOptions.CountDocumentsAsync();
 
         if (queryParams is { PageNumber: not null, PageSize: not null })
-            query = query.Skip((queryParams.PageNumber.Value - 1) * queryParams.PageSize.Value)
-                .Take(queryParams.PageSize.Value);
+            findOptions = findOptions
+                .Skip((queryParams.PageNumber.Value - 1) * queryParams.PageSize.Value)
+                .Limit(queryParams.PageSize.Value);
 
-        var data = query.ToList();
-        return new PagedResult<TEntity>(data, totalCount);
+        var data = await findOptions.ToListAsync();
+        return new PagedResult<TEntity>(data, (int)totalCount);
     }
 
     public async Task AddAsync(TEntity entity)
     {
-        await context.Set<TEntity>().AddAsync(entity);
+        await collection.InsertOneAsync(entity);
     }
 
-    public Task UpdateAsync(TEntity entity)
+    public async Task UpdateAsync(string id, TEntity entity)
     {
-        context.Set<TEntity>().Update(entity);
-        return Task.CompletedTask;
+        var objectId = ObjectId.Parse(id);
+        var filter = Builders<TEntity>.Filter.Eq("_id", objectId);
+        await collection.ReplaceOneAsync(filter, entity);
+    }
+
+    public async Task<string?> DeleteAsync(string id)
+    {
+        var objectId = ObjectId.Parse(id);
+        var result = await collection.DeleteOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId));
+        return result.DeletedCount > 0 ? id : null;
+    }
+
+    public async Task<long> DeleteAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        var result = await collection.DeleteManyAsync(predicate);
+        return result.DeletedCount;
     }
 
     public async Task<int?> DeleteAsync(int id)
     {
-        var entity = await GetByIdAsync(id);
-        if (entity != null)
-        {
-            context.Set<TEntity>().Remove(entity);
-            return id;
-        }
-
-        return null;
+        var filter = Builders<TEntity>.Filter.Eq("Id", id);
+        var result = await collection.DeleteOneAsync(filter);
+        return result.DeletedCount > 0 ? id : null;
     }
-
-    #region Private Methods
-
-    private IQueryable<TEntity> ApplyFilter(IQueryable<TEntity> query, Filter filter)
-    {
-        var parameter = Expression.Parameter(typeof(TEntity), "x");
-        var property = Expression.Property(parameter, filter.Property);
-        var constant = Expression.Constant(filter.Value);
-        Expression? condition = null;
-
-        switch (filter.Type.ToLower())
-        {
-            case "equals":
-                condition = Expression.Equal(property, constant);
-                break;
-            case "contains":
-                condition = Expression.Call(property, "Contains", null, constant);
-                break;
-        }
-
-        if (condition != null)
-        {
-            var lambda = Expression.Lambda<Func<TEntity, bool>>(condition, parameter);
-            return query.Where(lambda);
-        }
-
-        return null!;
-    }
-
-    private IQueryable<TEntity> ApplyOrder(IQueryable<TEntity> query, Order order)
-    {
-        var parameter = Expression.Parameter(typeof(TEntity), "x");
-        var property = Expression.Property(parameter, order.Property);
-        var lambda = Expression.Lambda(property, parameter);
-
-        var methodName = order.Ascending ? "OrderBy" : "OrderByDescending";
-        var resultExp = Expression.Call(
-            typeof(Queryable),
-            methodName,
-            [query.ElementType, property.Type],
-            query.Expression,
-            lambda
-        );
-
-        return query.Provider.CreateQuery<TEntity>(resultExp);
-    }
-
-    #endregion
 }

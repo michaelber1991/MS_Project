@@ -1,4 +1,5 @@
-using Auth.Application.Features.Saml.Commands.ProcessSamlLogin;
+using Auth.Application.Features.Auth.Commands.LoginWithPassword;
+using Auth.Application.Features.Auth.Commands.ProcessSamlLogin;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -7,18 +8,29 @@ namespace Auth.Api.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class SamlController(IMediator mediator) : ControllerBase
+public class AuthController(IMediator mediator) : ControllerBase
 {
-    [HttpGet("login")]
+    [HttpPost("credentials/login")]
+    public async Task<IActionResult> Login([FromBody] LoginWithPasswordCommand request)
+    {
+        var token = await mediator.Send(request);
+
+        if (token is null)
+            return Unauthorized();
+
+        return Ok(new { token });
+    }
+
+    [HttpGet("saml/login")]
     public IActionResult Login()
     {
         return Challenge(new AuthenticationProperties
         {
-            RedirectUri = "/saml/consume"
+            RedirectUri = Url.Action("SamlConsume", "Auth", null, Request.Scheme)
         }, "Saml2");
     }
 
-    [HttpPost("consume")]
+    [HttpPost("saml/consume")]
     public async Task<IActionResult> SamlConsume()
     {
         var result = await HttpContext.AuthenticateAsync("Saml2");

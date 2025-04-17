@@ -12,7 +12,7 @@ namespace Clean.Api.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class UserController(IMediator mediator) : ControllerBase
+public class UsersController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)

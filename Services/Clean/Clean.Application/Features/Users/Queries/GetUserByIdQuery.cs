@@ -13,3 +13,4 @@ public class GetUserByIdHandler(IUserRepository userRepository) : IRequestHandle
         return await userRepository.GetByIdAsync(request.Id);
     }
 }
+

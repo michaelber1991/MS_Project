@@ -13,10 +13,26 @@ public static class ServiceCollectionExtensions
     {
         services.AddControllers();
         services.AddOpenApi();
-        services.AddOcelot(configuration);
+        services.AddCorsConfiguration();
         services.AddAuthenticationSchemes(configuration);
+        services.AddOcelot(configuration);
+
 
         return services;
+    }
+
+    private static void AddCorsConfiguration(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
     }
 
     private static IServiceCollection AddAuthenticationSchemes(this IServiceCollection services,
@@ -40,15 +56,19 @@ public static class ServiceCollectionExtensions
             })
             .AddJwtBearer("Bearer", options =>
             {
+                var jwtSettings = configuration.GetSection("Jwt");
+                var issuer = jwtSettings["Issuer"];
+                var secretKey = jwtSettings["SecretKey"];
+
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = "tu-emisor",
+                    ValidIssuer = issuer,
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey =
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes("una-clave-secreta-mas-larga-de-256-bits"))
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
                 };
             })
             .AddCertificate("Certificate", options =>
