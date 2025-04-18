@@ -64,7 +64,7 @@ public static class ApplicationBuilderExtensions
             Dictionary<string, string> requiredAuthorizationClaims = downStreamRoute.RouteClaimsRequirement;
 
 
-            foreach (KeyValuePair<string, string> requiredAuthorizationClaim in requiredAuthorizationClaims)
+            foreach (var requiredAuthorizationClaim in requiredAuthorizationClaims)
                 if (ValidateIfStringIsRole(requiredAuthorizationClaim.Key))
 
                     foreach (var requiredClaimValue in requiredAuthorizationClaim.Value.Split(","))

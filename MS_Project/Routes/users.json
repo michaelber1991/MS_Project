@@ -23,6 +23,25 @@
       "RouteClaimsRequirement": {
         "role": "Admin2,Admin3,Admin"
       }
+    },
+    {
+      "DownstreamPathTemplate": "/hangfire",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5175"
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/hangfire",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "AuthenticationOptions": {
+        "AddHeadersToRequest": {
+          "Authorization": "{Authorization}"
+        }
+      }
     }
   ]
 }

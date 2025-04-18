@@ -2,7 +2,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using Ocelot.DependencyInjection;
 
 namespace MS_Project.Extensions;
@@ -16,7 +15,6 @@ public static class ServiceCollectionExtensions
         services.AddCorsConfiguration();
         services.AddAuthenticationSchemes(configuration);
         services.AddOcelot(configuration);
-
 
         return services;
     }
@@ -38,9 +36,9 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddAuthenticationSchemes(this IServiceCollection services,
         IConfiguration configuration)
     {
-        var certificateConfig = LoadCertificateConfig();
+        var certificateConfig = LoadCertificateConfig(configuration);
 
-        services.AddAuthentication(options => { options.DefaultScheme = "CustomScheme"; })
+        services.AddAuthentication()
             .AddPolicyScheme("CustomScheme", "Bearer or Certificate", options =>
             {
                 options.ForwardDefaultSelector = context =>
@@ -51,7 +49,7 @@ public static class ServiceCollectionExtensions
                     if (context.Connection.ClientCertificate != null)
                         return "Certificate";
 
-                    return "None";
+                    return null;
                 };
             })
             .AddJwtBearer("Bearer", options =>
@@ -81,7 +79,6 @@ public static class ServiceCollectionExtensions
                     OnCertificateValidated = context =>
                     {
                         var requestPath = context.HttpContext.Request.Path.Value;
-
 
                         if (certificateConfig != null)
                         {
@@ -153,16 +150,10 @@ public static class ServiceCollectionExtensions
         return jsonContent;
     }
 
-
-    private static List<CertificateConfig>? LoadCertificateConfig()
+    private static List<CertificateConfig>? LoadCertificateConfig(IConfiguration configuration)
     {
-        var configFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Configurations",
-            "certificate-configuration.json");
-        var json = File.ReadAllText(configFilePath);
-        var config = JObject.Parse(json);
-
-        var certificates = config["certificates"]?.ToObject<List<CertificateConfig>>();
-        return certificates;
+        var certificatesSection = configuration.GetSection("CertificateConfiguration:certificates");
+        return certificatesSection.Get<List<CertificateConfig>>();
     }
 }
 

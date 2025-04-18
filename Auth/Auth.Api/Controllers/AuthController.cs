@@ -8,8 +8,10 @@ namespace Auth.Api.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class AuthController(IMediator mediator) : ControllerBase
+public class AuthController(IMediator mediator, IConfiguration configuration) : ControllerBase
 {
+    private readonly IConfiguration _configuration = configuration;
+
     [HttpPost("credentials/login")]
     public async Task<IActionResult> Login([FromBody] LoginWithPasswordCommand request)
     {
@@ -39,6 +41,7 @@ public class AuthController(IMediator mediator) : ControllerBase
         var command = new ProcessSamlLoginCommand(result.Principal);
         var token = await mediator.Send(command);
 
-        return Redirect($"https://tufrontend.com/auth/callback?token={token}");
+        var frontendRedirect = _configuration["Frontend:AuthCallbackUrl"];
+        return Redirect($"{frontendRedirect}?token={token}");
     }
 }

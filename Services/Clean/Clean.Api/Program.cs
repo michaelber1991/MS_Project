@@ -11,13 +11,13 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.UseSwaggerUI(options => { options.SwaggerEndpoint("/openapi/v1.json", "Clean Api"); });
 }
 
-app.UseHttpsRedirection();
+// Configure the HTTP request pipeline.
+app.AddApiConfiguration(app.Environment);
 app.MapControllers();
 app.Run();
