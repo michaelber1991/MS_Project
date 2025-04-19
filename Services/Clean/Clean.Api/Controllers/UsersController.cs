@@ -12,20 +12,33 @@ namespace Clean.Api.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class UsersController(IMediator mediator) : ControllerBase
+public class UsersController(IMediator mediator, ILogger<UsersController> logger) : ControllerBase
 {
+    private readonly ILogger<UsersController> _logger = logger;
+    private readonly IMediator _mediator = mediator;
+
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(string id)
     {
-        var user = await mediator.Send(new GetUserByIdQuery(id));
-        return user != null ? Ok(user) : NotFound();
+        _logger.LogInformation("Fetching user with ID: {UserId}", id);
+
+        var user = await _mediator.Send(new GetUserByIdQuery(id));
+
+        if (user == null)
+        {
+            _logger.LogWarning("User with ID {UserId} not found", id);
+            return NotFound();
+        }
+
+        _logger.LogInformation("User with ID {UserId} successfully retrieved", id);
+        return Ok(user);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] QueryParams queryParams)
     {
         var query = new GetAllQuery<User>(queryParams);
-        var result = await mediator.Send(query);
+        var result = await _mediator.Send(query);
         return Ok(result);
     }
 
@@ -34,7 +47,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     {
         try
         {
-            var result = await mediator.Send(command);
+            var result = await _mediator.Send(command);
 
             if (result.Success)
                 return CreatedAtAction(nameof(CreateUser), new { id = result.Data?.Id }, result.Data);
@@ -63,7 +76,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     {
         try
         {
-            var result = await mediator.Send(new DeleteUserCommand(id));
+            var result = await _mediator.Send(new DeleteUserCommand(id));
 
             if (result.Success)
                 return Ok(new { message = $"User with ID {id} deleted successfully" });

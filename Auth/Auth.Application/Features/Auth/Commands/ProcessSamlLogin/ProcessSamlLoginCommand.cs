@@ -11,7 +11,7 @@ public record ProcessSamlLoginCommand(ClaimsPrincipal Principal) : IRequest<stri
 public class ProcessSamlLoginHandler(IUnitOfWork unitOfWork, IJwtGeneratorService jwtGenerator)
     : IRequestHandler<ProcessSamlLoginCommand, string>
 {
-    public async Task<string> Handle(ProcessSamlLoginCommand request, CancellationToken cancellationToken)
+    public async Task<string?> Handle(ProcessSamlLoginCommand request, CancellationToken cancellationToken)
     {
         var principal = request.Principal;
         var nameId = principal.FindFirst("NameID")?.Value;

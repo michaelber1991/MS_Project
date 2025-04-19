@@ -14,7 +14,7 @@ public class LoginWithPasswordCommandHandler(
     IConfiguration configuration)
     : IRequestHandler<LoginWithPasswordCommand, string>
 {
-    public async Task<string> Handle(LoginWithPasswordCommand request, CancellationToken cancellationToken)
+    public async Task<string?> Handle(LoginWithPasswordCommand request, CancellationToken cancellationToken)
     {
         var user = await unitOfWork.Users.GetAsync(
             u => u.Username == request.Username,
@@ -23,20 +23,25 @@ public class LoginWithPasswordCommandHandler(
                 .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role));
 
+        var expectedAppName = configuration["CustomSettings:ApplicationName"]!;
+
+        if (user == null)
+            return null;
+
+        if (!user.VerifyPassword(request.Password))
+            return null;
+
         var applications = user?.UserApplications
             .Select(ur => ur.Application.Name)
             .ToList();
 
-        var expectedAppName = configuration["ApplicationName"];
-
-        if (user != null && !user.VerifyPassword(request.Password) && applications != null &&
-            applications.Contains(expectedAppName!))
+        if (applications == null || (applications.Any() && applications.Contains(expectedAppName)))
             return null;
 
-        var roles = user?.UserRoles
+        var roles = user?.UserRoles.Where(ur => applications.Contains(ur.Application.Name))
             .Select(ur => ur.Role.Name)
             .ToList();
 
-        return jwtGenerator.GenerateToken(user, roles);
+        return jwtGenerator.GenerateToken(user!, roles!);
     }
 }

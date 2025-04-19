@@ -12,7 +12,7 @@ public interface IBaseRepository<TEntity>
     Task<TEntity?> GetAsync(
         Expression<Func<TEntity, bool>> predicate);
 
-    Task<TEntity?> GetByIdAsync(int id);
+    Task<TEntity?> GetByIdAsync(string id);
 
     Task<PagedResult<TEntity>> GetAllPaginatedFiltered(QueryParams queryParams);
 

@@ -203,3 +203,13 @@
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/zh-TW/Hangfire.Core.resources.dll
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/zh/Hangfire.Core.resources.dll
 /Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Serilog.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Serilog.AspNetCore.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Serilog.Extensions.Hosting.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Serilog.Extensions.Logging.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Serilog.Formatting.Compact.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Serilog.Settings.Configuration.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Serilog.Sinks.Console.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Serilog.Sinks.Debug.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Serilog.Sinks.File.dll
+/Users/Michael/Projects/MS_Project/Services/Clean/Clean.Api/bin/Debug/net9.0/Serilog.Sinks.Seq.dll

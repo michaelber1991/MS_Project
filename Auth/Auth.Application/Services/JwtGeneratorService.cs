@@ -11,7 +11,7 @@ namespace Auth.Application.Services;
 
 public class JwtGeneratorService(IConfiguration configuration) : IJwtGeneratorService
 {
-    public string GenerateToken(User user, List<string> roles)
+    public string? GenerateToken(User user, List<string> roles)
     {
         var claims = new List<Claim>
         {
