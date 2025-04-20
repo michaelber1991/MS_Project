@@ -14,6 +14,7 @@ public static class ServiceCollectionExtensions
         services.AddMediatRServices();
         services.AddValidationServices();
         services.AddPipelineBehaviors();
+        services.AddMapperServices();
 
         return services;
     }
@@ -33,6 +34,12 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddPipelineBehaviors(this IServiceCollection services)
     {
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        return services;
+    }
+
+    private static IServiceCollection AddMapperServices(this IServiceCollection services)
+    {
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
         return services;
     }
 }
