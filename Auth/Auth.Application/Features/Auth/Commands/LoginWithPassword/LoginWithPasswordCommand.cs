@@ -35,10 +35,10 @@ public class LoginWithPasswordCommandHandler(
             .Select(ur => ur.Application.Name)
             .ToList();
 
-        if (applications == null || (applications.Any() && applications.Contains(expectedAppName)))
+        if (applications == null || (applications.Any() && !applications.Contains(expectedAppName)))
             return null;
 
-        var roles = user?.UserRoles.Where(ur => applications.Contains(ur.Application.Name))
+        var roles = user?.UserRoles.Where(ur => ur.Application.Name == expectedAppName)
             .Select(ur => ur.Role.Name)
             .ToList();
 

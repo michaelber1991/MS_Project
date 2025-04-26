@@ -9,6 +9,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Clean.Application\Clean.Application.csproj"/>
         <ProjectReference Include="..\Clean.Domain\Clean.Domain.csproj"/>
+        <ProjectReference Include="..\Clean.Hubs\Clean.Hubs.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

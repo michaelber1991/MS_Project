@@ -11,10 +11,9 @@ public static class ApplicationBuilderExtensions
 {
     public static IApplicationBuilder AddApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment env)
     {
-        app.UseCors();
+        app.UseCors("DefaultCorsPolicy");
         app.Use(async (context, next) =>
         {
-            
             if (context.Request.Path.StartsWithSegments("/hangfire") &&
                 !context.Request.Headers.ContainsKey("Authorization"))
             {

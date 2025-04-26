@@ -1,8 +1,5 @@
-using System.Text;
 using Clean.Infrastructure.Configurations;
 using Hangfire;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Clean.Api.Extensions;
 
@@ -11,6 +8,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddControllers();
+        services.AddSignalR();
         services.AddOpenApi();
         services.AddCorsConfiguration();
         services.Configure<MongoSettings>(configuration.GetSection("MongoSettings"));
@@ -34,10 +32,17 @@ public static class ServiceCollectionExtensions
     {
         services.AddCors(options =>
         {
-            options.AddDefaultPolicy(policy =>
+            options.AddPolicy("NotificationHubCorsPolicy", policy =>
             {
-                policy
-                    .AllowAnyOrigin()
+                policy.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+
+            options.AddPolicy("DefaultCorsPolicy", policy =>
+            {
+                policy.AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             });

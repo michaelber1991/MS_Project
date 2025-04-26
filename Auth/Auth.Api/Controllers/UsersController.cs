@@ -9,12 +9,11 @@ using Auth.Application.Features.Users.Queries;
 using Auth.Domain.Entities;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auth.Api.Controllers;
 
-[Authorize(Roles = "Admin")]
+// [Authorize(Roles = "Admin")]
 [Route("[controller]")]
 [ApiController]
 public class UsersController(IMediator mediator) : ControllerBase

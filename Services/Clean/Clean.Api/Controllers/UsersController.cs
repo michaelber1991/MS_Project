@@ -71,6 +71,13 @@ public class UsersController(IMediator mediator, ILogger<UsersController> logger
         }
     }
 
+    [HttpPost("batch")]
+    public async Task<IActionResult> CreateUsersBatch([FromBody] CreateUserCommand command)
+    {
+        await _mediator.Send(command);
+        return Ok();
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {

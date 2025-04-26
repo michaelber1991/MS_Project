@@ -1,6 +1,13 @@
 {
   "Routes": [],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:5000"
+    "BaseUrl": "https://localhost:5000",
+    "DownstreamScheme": "https",
+    "HttpHandlerOptions": {
+      "AllowAutoRedirect": true,
+      "UseCookieContainer": true,
+      "UseTracing": true,
+      "DangerousAcceptAnyServerCertificateValidator": true
+    }
   }
 }

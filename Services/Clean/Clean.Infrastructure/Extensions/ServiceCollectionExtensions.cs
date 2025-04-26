@@ -1,8 +1,10 @@
 using Clean.Application.Interfaces;
 using Clean.Application.Interfaces.Repositories;
+using Clean.Infrastructure.Common.Handlers;
 using Clean.Infrastructure.Persistence.Context;
 using Clean.Infrastructure.Persistence.Repositories;
 using Clean.Infrastructure.Persistence.UnitOfWork;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
@@ -16,6 +18,7 @@ public static class ServiceCollectionExtensions
         services.AddCorsConfiguration();
         services.AddDatabase(configuration);
         services.AddRepositories();
+        services.AddScoped(typeof(INotificationHandler<>), typeof(SignalREventHandler<>));
     }
 
     private static void AddCorsConfiguration(this IServiceCollection services)

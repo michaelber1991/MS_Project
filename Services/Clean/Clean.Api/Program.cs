@@ -1,5 +1,6 @@
 using Clean.Api.Extensions;
 using Clean.Application.Extensions;
+using Clean.Hubs;
 using Clean.Infrastructure.Extensions;
 using Serilog;
 
@@ -27,4 +28,5 @@ if (app.Environment.IsDevelopment())
 // Configure the HTTP request pipeline.
 app.AddApiConfiguration(app.Environment);
 app.MapControllers();
+app.MapHub<NotificationHub>("/notificationhub").RequireCors("NotificationHubCorsPolicy");
 app.Run();
