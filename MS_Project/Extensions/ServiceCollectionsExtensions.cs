@@ -130,10 +130,16 @@ public static class ServiceCollectionExtensions
         var routeFiles = Directory.GetFiles("routes", "*.json");
         foreach (var file in routeFiles)
         {
-            var jsonContent = File.ReadAllText(file);
-            jsonContent = ReplacePlaceholdersWithConfigValues(jsonContent, environmentConfig);
-            File.WriteAllText(file, jsonContent);
-            config.AddJsonFile(file, true, true);
+            var originalContent = File.ReadAllText(file);
+            var resolvedContent = ReplacePlaceholdersWithConfigValues(originalContent, environmentConfig);
+
+            // En vez de sobrescribir el archivo original,
+            // guarda el contenido resuelto en un archivo temporal
+            var tempPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(file));
+            File.WriteAllText(tempPath, resolvedContent);
+
+            // Añade el archivo procesado al IConfigurationBuilder
+            config.AddJsonFile(tempPath, false, false);
         }
 
         return config;

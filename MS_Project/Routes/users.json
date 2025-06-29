@@ -5,8 +5,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": "5175"
+          "Host": "{{Services:UserService:Host}}",
+          "Port": "{{Services:UserService:Port}}"
         }
       ],
       "UpstreamPathTemplate": "/gateway/users",
@@ -15,27 +15,6 @@
         "POST",
         "PUT",
         "DELETE"
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "CustomScheme",
-        "AllowedScopes": []
-      },
-      "RouteClaimsRequirement": {
-        "role": "Admin2,Admin3,Admin"
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/notificationhub/negotiate",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "7055"
-        }
-      ],
-      "UpstreamPathTemplate": "/gateway/notificationhub/negotiate",
-      "UpstreamHttpMethod": [
-        "GET"
       ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CustomScheme",
